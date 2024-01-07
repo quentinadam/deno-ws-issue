@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  caddy:
+    container_name: caddy
+    image: "caddy:2.7.6-alpine"
+    command: caddy reverse-proxy --from http://:8001 --to http://test:8000 --debug --access-log
+    ports:
+      - "0.0.0.0:8001:8001"
+  test:
+    container_name: test
+    build:
+      args:
+        - VERSION=1.39.2
+    image: "test:latest"
+    ports:
+      - "0.0.0.0:8000:8000"
+    environment:
+      - LENGTH=3500
